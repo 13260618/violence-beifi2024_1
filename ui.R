@@ -2,14 +2,15 @@ library(shiny)
 library(shinythemes)
 library(ggplot2)
 library(plotly)
+library(shinyjs)
 
 
 #library(maps)
 #library(maptools)
- 
+
 
 bootstrapPage(
-  
+  useShinyjs(), 
   tags$head(
     tags$style(
       HTML("
@@ -53,12 +54,30 @@ bootstrapPage(
         border-bottom: 2px solid #3498db; /* Línea de borde inferior en las pestañas */
         background-color: rgba(255, 255, 255, 0.4);
       }
+      
+      
+      /*Estilo para botones*/
+      
+      .my-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      
   "
-           )
       )
-    ),
+    )
+  ),
   
-
+  
   
   navbarPage(
     theme = shinytheme("simplex"), 
@@ -80,28 +99,34 @@ bootstrapPage(
                                fluidRow(
                                  column(
                                    width = 12,
-                                 
+                                   
                                    selectInput('caso',
                                                "Seleccione el gráfico que desea ver",
                                                choices = c("Porcentaje de mujeres en el país (2021)",
                                                            "Encuestas de violencia 2016 vs 2021")
-                                     
+                                               
                                    )
                                    
                                    
                                    ,
-                                   HTML("<b>INTERPRETACIÓN</b>"),
+                                   HTML('<span style="font-size: 120%;"> <b>INTERPRETACIÓN</b> </span>'),
                                    HTML("</p></p>"),
-                                   textOutput("text_01"),
-                                   HTML("</p></p>"),
+                                   tags$div(textOutput("text_01"), 
+                                            style = "
+                                                     font-weight: bold;
+                                                     font-style: italic;
+                                                     font-size: 110%;")
+                                   #color: #A233FF;
+                                   ,                             
+                                     HTML("</p></p>"),
                                    textOutput("text_02"),
                                    
                                    
                                  ),
-                                   
-                                   #plotOutput("plot1")
-                                 )
+                                 
+                                 #plotOutput("plot1")
                                )
+                      )
                       ,
                       tabPanel("Escolar",
                                # Contenido de la pestaña 2
@@ -126,50 +151,53 @@ bootstrapPage(
              
              column(8,
                     mainPanel( 
-                      plotlyOutput("histogram")
+                      plotlyOutput("plot_01"),
+                      
+
+                      #actionButton("next_graph", "Siguiente Gráfico")
                     )
                     
                     
                     
-                    )
-             
-             
              )
+             
+             
+    )
     ,
     
     tabPanel(
       "Regionalización",
       column(6,
              
-             )),
-      
-      tabPanel(
-        "Aspectos",
-        column(6,
-               
-        )),
-        
-        tabPanel(
-          "Feminicidios",
-          column(6,
-                 
-          )),
-          
-          tabPanel(
-            "Póster",
-            column(6,
-                   
-            ))
-      
-      
-    )
+      )),
+    
+    tabPanel(
+      "Aspectos",
+      column(6,
+             
+      )),
+    
+    tabPanel(
+      "Feminicidios",
+      column(6,
+             
+      )),
+    
+    tabPanel(
+      "Póster",
+      column(6,
+             
+      ))
+    
+    
   )
-    
-    
-    
-    
-    
-    
-      
-                                     
-  
+)
+
+
+
+
+
+
+
+
+
