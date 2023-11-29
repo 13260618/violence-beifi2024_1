@@ -4,11 +4,9 @@ library(ggplot2)
 library(plotly)
 
 
-library(maps)
+#library(maps)
 #library(maptools)
-
-
-
+ 
 
 bootstrapPage(
   
@@ -44,10 +42,7 @@ bootstrapPage(
       background-color: rgba(235, 130, 235, 0.4);
     }
     
-    
-    
-    
-    /* Estilos para la línea de separación */
+      /* Estilos para la línea de separación */
       .separation-line {
         border-left: 2px solid #3498db; /* Color de la línea (azul) */
         padding-left: 10px; /* Espaciado izquierdo para la línea */
@@ -58,9 +53,6 @@ bootstrapPage(
         border-bottom: 2px solid #3498db; /* Línea de borde inferior en las pestañas */
         background-color: rgba(255, 255, 255, 0.4);
       }
-    
-    
-    
   "
            )
       )
@@ -79,54 +71,60 @@ bootstrapPage(
     
     
     tabPanel("Resultados",
-             column(6,
+             column(4,
                     tabsetPanel(
                       id = "tabs",
-                      tabPanel("Tab 1", 
+                      tabPanel("General", 
                                #Contenido de la pestaña 
                                
                                fluidRow(
                                  column(
-                                   width = 6,
-                                   sliderInput("bins_tab1",
-                                               "Número de Bins:",
-                                               min = 1,
-                                               max = 50,
-                                               value = 30),
-                                   
-                                   dateInput("f0", HTML("<b style=color:#045a8d>Tiempo de inicio (ti)</b>"), 
-                                             value = as.Date("2021/05/28"), 
-                                             format = "yyyy/mm/dd", 
-                                            #min = min(data0$Fecha), max = max(data0$Fecha)
+                                   width = 12,
+                                 
+                                   selectInput('caso',
+                                               "Seleccione el gráfico que desea ver",
+                                               choices = c("Porcentaje de mujeres en el país (2021)",
+                                                           "Encuestas de violencia 2016 vs 2021")
+                                     
                                    )
+                                   
+                                   
+                                   ,
+                                   HTML("<b>INTERPRETACIÓN</b>"),
+                                   HTML("</p></p>"),
+                                   textOutput("text_01"),
+                                   HTML("</p></p>"),
+                                   textOutput("text_02"),
+                                   
+                                   
                                  ),
                                    
                                    #plotOutput("plot1")
                                  )
                                )
+                      ,
+                      tabPanel("Escolar",
+                               # Contenido de la pestaña 2
+                               fluidRow(
+                                 column(
+                                   width = 8,
+                                   plotOutput("plot_02")
+                                 )
+                               )
                       ),
-                      # tabPanel("Tab 2", 
-                      #          # Contenido de la pestaña 2
-                      #          fluidRow(
-                      #            column(
-                      #              width = 6,
-                      #              plotOutput("plot2")
-                      #            )
-                      #          )
-                      # ),
-                      # tabPanel("Tab 3", 
-                      #          # Contenido de la pestaña 3
-                      #          fluidRow(
-                      #            column(
-                      #              width = 6,
-                      #              plotOutput("plot3")
-                      #            )
-                      #          )
-                      # )
-                    ),
+                      tabPanel("Laboral",
+                               # Contenido de la pestaña 3
+                               fluidRow(
+                                 column(
+                                   width = 8,
+                                   plotOutput("plot_03")
+                                 )
+                               )
+                      )
+                    )),
              
              
-             column(6,
+             column(8,
                     mainPanel( 
                       plotlyOutput("histogram")
                     )
@@ -158,7 +156,7 @@ bootstrapPage(
           )),
           
           tabPanel(
-            "Históricos",
+            "Póster",
             column(6,
                    
             ))
