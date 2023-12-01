@@ -5,9 +5,17 @@ library(plotly)
 library(shinyjs)
 
 
+library(readxl)
+library(orca)
+ 
 #library(maps)
 #library(maptools)
 
+library(rsconnect)
+
+rsconnect::setAccountInfo(name='8itts9-israel-monjaraz0ram0rez',
+                          token='645244F9D2D53E88039AD56828337003',
+                          secret='Jc68iAavi04W4ZJoRsFNeYMxVPYKa2YJYbcKcQH/')
 
 bootstrapPage(
   useShinyjs(), 
@@ -84,28 +92,56 @@ bootstrapPage(
     collapsible = TRUE,
     id = "nav",
     windowTitle = "WOMEN",
-    HTML('<a style="text-decoration:none;cursor:default" class="active" href="#">Violence-2023</a>'),
-    
-    
-    
-    
-    tabPanel("Resultados",
+ HTML('<a style="text-decoration:none;cursor:default" class="active" href="#"><b>Violence-2023</a></b>'),
+ 
+ tabPanel(HTML("<b>Resultados</b>"),
              column(4,
                     tabsetPanel(
-                      id = "tabs",
-                      tabPanel("General", 
-                               #Contenido de la pestaña 
-                               
+                       
+                      
+                      tabPanel(HTML("<b>JUSTIFICACIÓN</b>"),
                                fluidRow(
                                  column(
                                    width = 12,
-                                   
-                                   selectInput('caso',
-                                               "Seleccione el gráfico que desea ver",
-                                               choices = c("Porcentaje de mujeres en el país (2021)",
-                                                           "Encuestas de violencia 2016 vs 2021")
-                                               
+                                   div(
+                                     style = "text-align: justify;",
+                                   HTML("<p> <b>
+                                        La violencia hacia las mujeres es sin duda alguna, uno de los temas más importantes para nuestra sociedad
+                                        en la actualidad debido a las diferencias muy marcadas en diferentes aspectos de la vida diaria 
+                                        (salarios, cargos políticos, acoso,  etc), es por ello que a continuación se presenta de manera sintetizada
+                                        algunos indicadores representativos tomados de datos oficiales del Instituto Nacional de Estadística y Geografía (INEGI),
+                                        que a su vez cuenta con datos de dos encuestas recientemente realizadas en 2016 y 2021, la encuesta:
+                                        Encuesta Nacional sobre la Dinámica de las Relaciones en los Hogares (ENDIREH), así mismo algunos indicadores son tomados 
+                                        del sitio oficial de Sistema Integrado de Estadísticas sobre Violencia contra las Mujeres (SIESVIM), que pertenece al INEGI.
+                                        Este trabajo tiene la finalidad de reunir en un mismo sitio la situación que prevalece en el país sobre indicadores de 
+                                        violencia contra las mujeres en México, realizando un análisis exploratorio de dichos datos y brindar algunas conclusiones 
+                                        obvias de cada gráfico mostrado.
+                                          </p> </b>
+                                        ")
+                                  
+                                   ),
+                                   div(
+                                     style = "text-align: center;",
+                                     tags$img(src = "hypatia.png", height = 150, width = 150),
+                                     tags$img(src = "esfm.png", height =150, width = 150)
+                                     
                                    )
+                                  )
+                               )
+                      ),
+                      
+                      id = "tabs",
+                      tabPanel(HTML("<b>SITUACIÓN GENERAL</b>"),
+                               fluidRow(
+                                 column(
+                                   width = 12,
+                                   selectInput('caso',
+                                               HTML("<b> Seleccione el gráfico que desea ver</b> ")
+                                                ,
+                                               choices = c("Población de mujeres en 2021",
+                                                           "Cambios de 2016 a 2021")
+                                 
+                                               )
                                    
                                    
                                    ,
@@ -115,10 +151,10 @@ bootstrapPage(
                                             style = "
                                                      font-weight: bold;
                                                      font-style: italic;
-                                                     font-size: 110%;")
-                                   #color: #A233FF;
-                                   ,                             
-                                     HTML("</p></p>"),
+                                                     font-size: 110%;
+                                                     text-align: justify;",
+                                            ),                             
+                                   HTML("</p></p>"),
                                    textOutput("text_02"),
                                    
                                    
@@ -127,71 +163,67 @@ bootstrapPage(
                                  #plotOutput("plot1")
                                )
                       )
-                      ,
-                      tabPanel("Escolar",
-                               # Contenido de la pestaña 2
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   plotOutput("plot_02")
-                                 )
-                               )
-                      ),
-                      tabPanel("Laboral",
-                               # Contenido de la pestaña 3
-                               fluidRow(
-                                 column(
-                                   width = 8,
-                                   plotOutput("plot_03")
-                                 )
-                               )
-                      )
-                    )),
-             
-             
-             column(8,
-                    mainPanel( 
-                      plotlyOutput("plot_01"),
+                       
                       
-
-                      #actionButton("next_graph", "Siguiente Gráfico")
-                    )
-                    
-                    
-                    
-             )
+                      
+                      )
+                    ),
+    column(8,
+           mainPanel( 
+             plotlyOutput("plot_01"),
              
-             
-    )
-    ,
+           ) )
+             ),
     
     tabPanel(
-      "Regionalización",
+      HTML("<b>Regionalización</b>"),
+    
+      column(12,
+             HTML("<p></p>"),
+             selectInput('states',
+                         HTML("<b> Seleccione el análisis por estados que desea ver.</b> ")
+                         ,
+                         choices = c("Violencia Psicológica",
+                                     "Violencia Sexual",
+                                     "Violencia Física")
+                         
+             ),
+             HTML("<p></p>"),
+             plotlyOutput("plot_02")
+      )),
+    
+    tabPanel(id="5",
+      HTML("<b>Aspectos</b>"),
       column(6,
              
       )),
     
-    tabPanel(
-      "Aspectos",
+    tabPanel( 
+             HTML("<b>Feminicidios</b>"),
       column(6,
-             
+             plotlyOutput('plot_defunciones')
       )),
     
-    tabPanel(
-      "Feminicidios",
-      column(6,
-             
-      )),
-    
-    tabPanel(
-      "Póster",
-      column(6,
-             
-      ))
-    
+    tabPanel( 
+             HTML("<b>Póster</b>"),
+      column(12,
+             mainPanel(
+               tags$iframe(
+                 id = "pdf_viewer",
+                 style="height:900px; width:150%;", 
+                 src = "poster-beifi2024_1-women.pdf"),
+                 style = "border: none;"
+               )
+               # Aquí se añade el visor de PDF
+      #          tags$iframe(style="height:600px; width:100%;", 
+      #                      
+      )
+               
+               )
+  )
     
   )
-)
+
 
 
 
